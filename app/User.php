@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     //protected $table="user";
-    
+
     use HasApiTokens,Notifiable;
 
     /**
@@ -19,7 +19,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','last_name','document_nro',
+        'document_type','gender','nationality','phone','cellphone'
     ];
 
     /**

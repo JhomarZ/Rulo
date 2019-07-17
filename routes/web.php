@@ -11,6 +11,51 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+//Home
+//Route::get('/', 'HomeController@Index')->name('home');
+Route::get('/', 'ModaController@Index')->name('home');
+
+Route::get('/home', 'ModaController@Index')->name('home'); // API
+
+
+//Rulo - Auth - Login
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+//Rulo - Profile
+Route::get('perfil/{id}', 'ProfileController@userPage')->name('perfil-usuario');
+Route::post('perfil/{id}', 'ProfileController@updateUser');
+Route::get('/perfil/favoritos/{id}', 'ProfileController@favoritesPage');
+//Route::get('/perfil/usuario', 'ProfileController@userPage')->name('perfil-usuario');
+
+
+
+//Rulo - Auth - Register
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+
+//RULO - MODA
+Route::get('/moda', 'ModaController@Index')->name('moda'); // API
+Route::get('/moda-search', 'ModaController@Filters')->name('modafilters');
+Route::get('/moda-search/{group?}/{category?}/{subcategory?}', 'ModaController@Filters')->name('modafilters');
+
+//RULO - PRODUCT
+Route::get('p/{name?}', 'ProductController@Detail')->name('productDetail');
+
+
+//Rulo - SELLER
+Route::get('/seller/{id}', 'SellerController@index')->name('seller');
+
+//Route::get('/perfil/usuario', 'ProfileController@userPage')->name('perfil-usuario');
+
+
+
+/*
+Route::get('/', 'HomeController@Home')->name('home');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+*/

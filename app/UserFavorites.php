@@ -13,5 +13,6 @@ class UserFavorites extends Model
     public function product()
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
+        //return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
 }
