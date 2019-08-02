@@ -12,8 +12,12 @@ class SellerController extends Controller
 
     public function index(Request $request,$id){
 
-        $filtro="";
+        $filtro=""; $sort="";
         $productoDesc="";
+
+        if($request->has('sorted')){
+            $sort=$request->sorted;
+        }
 
         if($request->has('q')){
             $productoDesc=$request->q;
@@ -22,6 +26,12 @@ class SellerController extends Controller
         $seller=Seller::find($id);
         $products=Product::query()->when($productoDesc!="", function ($query) use ($productoDesc) {
             return $query->where('short_name',"like",'%'.$productoDesc.'%');
+        })
+        ->when($sort!="", function ($query) use ($sort) {
+            if($sort=="DESC" || $sort=="ASC"){
+                return $query->orderBy('price_sale',$sort);
+            }
+            return $query->orderBy($sort,"DESC");
         })
         ->where("seller_id","=",$id)
         ->orderBy('id',request("sorted","DESC"))

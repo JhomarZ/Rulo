@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Product;
 
-class UserFavorites extends Model
+class UserFavorite extends Model
 {
     //
     protected $table="user_favorite";

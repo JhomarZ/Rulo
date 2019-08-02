@@ -58,19 +58,24 @@
                 @enderror
             </div>
             <div class="col-md-6 mt-4">
-              <label for="document_nro" class="">DNI(opcional)</label>
-              <input type="text" id="document_nro" name="document_nro" class="form-control"  autofocus>
+              <label for="document_number" class="">DNI(opcional)</label>
+              <input type="text" id="document_number"  value="{{ old('document_number') }}" name="document_number" class="form-control"  autofocus>
             </div>
           </div>
           <div class="forgotLogin checkbox mb-3 text-muted">
               <label class="container mt-4">
-                <input type="checkbox" checked="checked">
+                <input type="checkbox" value="1" name="wish_offers" checked="checked">
                 <span class="checkmark"></span>Me gustaría recibir comunicaiones promocionales (Recibirás un email de confirmación)
               </label>
 
               <label class="container mt-4">
-                <input type="checkbox">
+                <input type="hidden" name="accept_terms" value="0">
+                <input type="checkbox" value="1" name="accept_terms">
                 <span class="checkmark"> </span>Acepto los <a class="redlink"href="">términos y condiciones y la politica de Privacidad y Tratamientos de Datos Personales</a>
+                @if($errors->has('accept_terms'))
+                <br>
+                  <span style="color:red;">* Debe aceptar los terminos y condiciones</span>
+                @endif
               </label>
           </div>
           <div class="col-md-12 text-center ">
@@ -78,7 +83,6 @@
                     Completar Registro <i class="icon-right fa fa-angle-right"></i>
                 </button>
           </div>
-
 
         </form>
       </div>

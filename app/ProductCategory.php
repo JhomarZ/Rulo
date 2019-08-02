@@ -17,10 +17,11 @@ class ProductCategory extends Model
         return $this->hasMany(ProductSubCategory::class, 'category_id', 'id');
     }
 
+    /*
     public function group()
     {
         return $this->belongsTo(ProductGroup::class, 'group_id');
-    }
+    } */
 
 
     public function products()

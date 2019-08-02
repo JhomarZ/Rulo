@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Brand;
 use App\ProductCategory;
 use App\ProductGroup;
 use App\ProductSubCategory;
+use Illuminate\Support\Facades\DB;
+
 
 
 class ModaController extends Controller
@@ -18,7 +21,7 @@ class ModaController extends Controller
         $brands=[]; $groups=[]; $categories=[]; $featured=[]; $favorites=[];
         $subCategories=[];
 
-        $favorites= Product::orderBy('total_saw', 'desc')
+        $favorites= Product::orderBy('total_sales', 'desc')
         ->take(8)
         ->get();
 
@@ -29,8 +32,11 @@ class ModaController extends Controller
         $groups= ProductGroup::all();
 
 
-        $categories= ProductCategory::with("group")->get();
+        $categories= ProductCategory::get();
         $brands= Brand::all();
+
+        //dd($categories[0]->group);
+        //return;
 
         return view('moda.index')
         ->with('brands',$brands)
@@ -41,17 +47,16 @@ class ModaController extends Controller
     }
 
     public function Filters(Request $request,$group="",$category="",$subcategory=""){
-
+        $sort="total_saw";
         //Filtros
         $brandsFilter=[]; $priceFilter="";
         //return;
         $brands=[]; $groups=[]; $categories=[]; $products=[]; $filtros=[];
-        /*
-            $filtros=array();
-            array_push($filtros,$group);
-            array_push($filtros, array('filtro' => "venta",'url' => "/venta/url"));
-            array_push($filtros, array('filtro' => "miraflores",'url' => "/miraflores/url"));
-        */
+
+        if($request->has('sorted')){
+            $sort=$request->sorted;
+        }
+        $group=$group==""?"Hombre":$group;
 
         $brandsId=[];
         if($request->has('brand')){
@@ -71,30 +76,83 @@ class ModaController extends Controller
             $maximo=Str::after($priceFilter,"-");
         }
 
-        $products=Product::query()->when($brandsId!=[], function ($query) use ($brandsId) {
-            return $query->whereIn('brand_id',$brandsId);
-        })
-        ->when($minimo!="", function ($query) use ($minimo) {
-            return $query->where('price_sale',">",$minimo);
-        })
-        ->when($maximo!="", function ($query) use ($maximo) {
-            return $query->where('price_sale',"<",$maximo);
-        })
-        ->with("seller")
-        ->take(8)
-        ->get();
-/*
-        $products=$products->with("seller")
-            ->take(8)
+            //OBTENEMOS LAS CATEGORIAS SEGUN EL RESULTADO
+            $categories=Product::query()->when($group!="", function ($query) use ($group) {
+                $pg=ProductGroup::where('group','=',$group)->first();
+                if($pg!=null)
+                return $query->where('group_id','=',$pg->id);
+            })
+            ->select("category_id", DB::raw("count(*) as total"))->groupBy("category_id")
             ->get();
-*/
+
+            foreach ($categories as $cat){
+                $pc=ProductCategory::find($cat->category_id);
+                $cat["category"]=$pc->category;
+            }
+
+
+            //OBTENEMOS LOS BRANDS SEGUN EL RESULTADO
+            $brands=Product::query()->when($group!="", function ($query) use ($group) {
+                $pg=ProductGroup::where('group','=',$group)->first();
+                if($pg!=null)
+                return $query->where('group_id','=',$pg->id);
+            })
+            ->when($category!="", function ($query) use ($category) {
+                $cat=ProductCategory::where('category','=',$category)->first();
+                if($cat!=null)
+                return $query->where('category_id','=',$cat->id);
+            })
+            ->select("brand_id", DB::raw("count(*) as total"))->groupBy("brand_id")
+            ->get();
+            foreach ($brands as $brand){
+                $br=Brand::find($brand->brand_id);
+                $brand["brand"]=$br->brand;
+            }
+
+
+        $products=Product::query()->when($group!="", function ($query) use ($group) {
+                    $pg=ProductGroup::where('group','=',$group)->first();
+                    if($pg!=null)
+                    return $query->where('group_id','=',$pg->id);
+                })
+                ->when($category!="", function ($query) use ($category) {
+                    $cat=ProductCategory::where('category','=',$category)->first();
+                    if($cat!=null)
+                    return $query->where('category_id','=',$cat->id);
+                })
+                ->when($brandsId!=[], function ($query) use ($brandsId) {
+                    return $query->whereIn('brand_id',$brandsId);
+                })
+                ->when($minimo!="", function ($query) use ($minimo) {
+                    return $query->where('price_sale',">",$minimo);
+                })
+                ->when($maximo!="", function ($query) use ($maximo) {
+                    return $query->where('price_sale',"<",$maximo);
+                })
+                ->with("seller","category","files");
+                //->orderBy('id',request("sorted","DESC"))
+
+                if(!auth()->guest()){
+                    $products->with("userFavorite");
+                }
+
+        $products=$products->when($sort!="", function ($query) use ($sort) {
+            if($sort=="DESC" || $sort=="ASC"){
+                return $query->orderBy('price_sale',$sort);
+            }
+            return $query->orderBy($sort,"DESC");
+        });
+
+        $products=$products->paginate(8);
+
+
+
         $groups= ProductGroup::all();
-        $categories= ProductCategory::all();
-        $brands= Brand::all();
+
+
 
         $filtros["brands"]=$brandsFilter;
-       // dd($filtros);
-       // return;
+
         return view('moda.filters')
         ->with('brands',$brands)
         ->with('groups',$groups)
@@ -107,5 +165,6 @@ class ModaController extends Controller
         ->with('priceFilter',$priceFilter)
         ->with('products',$products);
     }
+
 
 }

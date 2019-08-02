@@ -178,11 +178,11 @@
                     <div class="row stats justify-content-center ">
                       <div class="d-flex align-items-md-center align-items-lg-center">
                         <div class="div1 col-md-6 col-sm-6 ">
-                          <h1>{{$product->seller->total_visits}}</h1>
+                          <h1>{{$product->total_saw}}</h1>
                           <p>Vistos</p>
                         </div>
                         <div class="div2 col-md-6 col-sm-6 " style="border-right:0px">
-                          <h1> {{$product->seller->total_sales}}</h1>
+                          <h1> {{$product->total_sales}}</h1>
                           <p>Vendidos</p>
                         </div>
                         <!--<div class="div3 col-md-4 col-sm-6 ">

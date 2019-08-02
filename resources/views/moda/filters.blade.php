@@ -72,12 +72,19 @@
               <div class="col">
                 <div class="collapse show" id="collapse2">
                   <div class="card card-body">
-                    @foreach($categories as $cat)
-                        <a href="{{url('/moda-search/'.$cat->group->group.'/'.$cat->category ).'?'}}">
-                            @if (!empty($category) && $cat->category==$category)
-                                <b>{{$cat->category}} <span class="tittledark">({{$cat->total_products}})</span></b>
+                        <a href="{{url('/moda-search/'.$group ).'?'}}">
+                            @if (empty($category))
+                                <b>Todos <!--<span class="tittledark">({{$products->total()}})</span>--></b>
                             @else
-                                {{$cat->category}} <span class="tittledark">({{$cat->total_products}})</span>
+                                Todos<!--<span class="tittledark">({{$products->total()}})--></span>
+                            @endif
+                        </a>
+                    @foreach($categories as $cat)
+                        <a href="{{url('/moda-search/'.$group.'/'.$cat->category ).'?'}}">
+                            @if (!empty($category) && $cat->category==$category)
+                                <b>{{$cat->category}} <span class="tittledark">({{$cat->total}})</span></b>
+                            @else
+                                {{$cat->category}} <span class="tittledark">({{$cat->total}})</span>
                             @endif
                         </a>
                     @endforeach
@@ -135,7 +142,7 @@
                         </button>
                       </li>
                   </ul>
-                  <a href="#">A consultar <span class="tittledark">(441)</span></a>
+                    <!--<a href="#">A consultar <span class="tittledark">(441)</span></a>-->
                   </div>
                 </div>
               </div>
@@ -153,10 +160,10 @@
 
                     @foreach($brands as $brand)
                         @if(in_array($brand->brand, $filtroBrands))
-                            <a href="#" ><b>{{$brand->brand}} <span class="tittledark">({{$brand->total_products}})</span></b></a>
+                            <a href="#" ><b>{{$brand->brand}} <span class="tittledark">({{$brand->total}})</span></b></a>
                         @else
 
-                        <a href="javascript:addFilter('brand[]','','{{$brand->brand}}')" >{{$brand->brand}} <span class="tittledark">({{$brand->total_products}})</span></a>
+                        <a href="javascript:addFilter('brand[]','','{{$brand->brand}}')" >{{$brand->brand}} <span class="tittledark">({{$brand->total}})</span></a>
                             <!-- <a href="{{Request::getRequestUri().'&brand[]='.$brand->brand}}" >{{$brand->brand}} <span class="tittledark">({{$brand->total_products}})</span></a>-->
                         @endif
                     @endforeach
@@ -175,22 +182,25 @@
             <div class="colorBlue tittledetail col-md-12">
               <div class="row">
                 <div class="col-md-12 col-sm-12">
+                @if($filtroBrands!=null || $priceFilter!="")
                   <h3 class="float-left">Filtros
                     <a href="{{Request::url().'?'}}"><i class="fa fa-trash"></i></a>
-                    <a href="#"><i class="fa fa-save"></i></a>
+                    <!--<a href="#"><i class="fa fa-save"></i></a>-->
                   </h3>
+                @endif
                   <div class="float-right mt-3">
                     Ver por:
-                    <a href="#"><i class="fa fa-map"></i></a>
+                    <!--<a href="#"><i class="fa fa-map"></i></a>-->
                     <a class="listFilter" href="#"><i class="fa fa-list"></i></a>
                     <a class="blockFilter" href="#"><i class="fa fa-th-large"></i></a>
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
+                    @if($filtroBrands!=null || $priceFilter!="")
                     <ul class="filterActive ">
                                 @foreach($filtroBrands as $br)
-                                <li>{{$br}} <a href="{{Str::replaceFirst("brand[]=".Str::replaceFirst(" ","%20",$br),"",Request::getRequestUri())}}">x</a></li>
-                                <!-- <li>{{$br}} <a href="javascript:deleteFilter('brand','{{$br}}')">x</a></li>-->
+                                <!--<li>{{$br}} <a href="{{Str::replaceFirst("brand[]=".Str::replaceFirst(" ","%20",$br),"",Request::getRequestUri())}}">x</a></li>-->
+                                 <li>{{$br}} <a href="javascript:deleteFilter('brand','{{$br}}')">x</a></li>
                                 @endforeach
 
                                 @if($priceFilter!="")
@@ -199,27 +209,56 @@
                                  <li>{{$priceFilter}} <a href="javascript:deleteFilter('price',$('#hddPriceFilter').val())">x</a></li>
                                 @endif
                     </ul>
+                    @endif
                 </div>
 
                 <div class=" colorBlue col-md-12 col-sm-12 mt-2">
                   <div class="float-left mt-1">
-                     Entontrados: <span class="tittledark">25 Inmuebles </span>
+                     Entontrados: <span class="tittledark"> {{$products->total()}} productos</span>
                   </div>
                   <div class="float-right">
                      Ordenar por:
-                    <select class="form-control" id="exampleFormControlSelect1">
-                      <option>Relevancia</option>
-                      <option>De mayor a menor</option>
-                      <option>De menor a mayor</option>
+                    <select onchange="changeOrderBy('{{ Request::fullUrlWithQuery(['sorted' => 'XXX']) }}' )" class="form-control" id="ddlSorted">
+                        <!--<option value="" selected="">Relevancia</option>-->
+                        @if(request("sorted")=="total_saw")
+                            <option value="total_saw" selected="selected">Mas vistos</option>
+                        @else
+                            <option value="total_saw" >Mas vistos</option>
+                        @endif
+                        @if(request("sorted")=="total_sales")
+                            <option value="total_sales" selected="selected">Mas vendidos</option>
+                        @else
+                            <option value="total_sales" >Mas vendidos</option>
+                        @endif
+                        @if(request("sorted")=="DESC")
+                            <option value="DESC" selected="selected">De mayor a menor</option>
+                        @else
+                            <option value="DESC" >De mayor a menor</option>
+                        @endif
+                        @if(request("sorted")=="ASC")
+                            <option value="ASC" selected="">De menor a mayor</option>
+                        @else
+                            <option value="ASC" >De menor a mayor</option>
+                        @endif
                     </select>
                   </div>
                 </div>
+
                 @foreach($products as $prod)
+                    <!-- formulario para agregar a favoritos -->
+                        <form id="product-fav-form-{{$prod->id}}" class="hidden"
+                            action="{{ (!$prod->userFavorite) ? route('product.fav.save') : route('product.fav.delete',$prod->userFavorite->id) }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="product_id" value="{{$prod->id}}">
+                        </form>
+                    <!--  FIN -->
+
                     <div class="col-md-12 col-sm-12 mt-4 statelist ">
                     <div class="card p-3 mb-3">
                     <div class="row">
                         <div class="col-md-6 col-sm-12 imageheight pl-3  ">
-                        <div class="updetail">Ocasión</div>
+                        <div class="updetail">
+                            Ocasión</div>
                         <div class="dataSlide2">
                             <div class="dataSlideinfo2">
                             <span>6</span><i class="lnr lnr-camera"></i>
@@ -250,8 +289,10 @@
                         </div>
 
                         <div class="col-md-6 col-sm-12 containerHeight pl-3">
-                        <a href="{{url('/p/'.$prod->short_name)}}">
-                            <strong class="d-inline-block text-clearblue elipsis"><h4>{{$prod->short_name}}</h4></strong>
+                        <a href="{{url('/p/'.Str::replaceFirst('/','--',$prod->short_name))}}">
+                            <strong class="d-inline-block text-clearblue elipsis"
+                            style="width:95%"
+                            ><h4 class="elipsis">{{$prod->short_name}}</h4></strong>
                         </a>
                         <div class="text-muted" style="    overflow: hidden;
                         text-overflow: ellipsis;
@@ -266,136 +307,36 @@
                                     Vendido por: {{$prod->seller->commercial_name}}
                                 </p>
                         </a>
-
+                        <div class="text-muted" style="    overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        font-size:0.8rem;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;">Vistos: {{$prod->total_saw}}  &nbsp;&nbsp; Vendidos: {{$prod->total_sales}}
+                        </div>
                         <div class="detailPrice">
-                            <h5 class="ltrulo float-left">US$ <span style="text-decoration: line-through;">{{$prod->price_list}}</span> &nbsp; {{$prod->price_sale}} </h5>
+                            <h5 class="ltrulo float-left">S/ <span style="text-decoration: line-through;">{{$prod->price_list}}</span> &nbsp; {{$prod->price_sale}} </h5>
+                            <div class="starfav float-right">
+                                    <a href="javascript:
+                                    document.getElementById('product-fav-form-{{$prod->id}}').submit();" style="text-decoration: none;" onclick="">
+                                        <i class="fa fa-star" style="color:{{asset((!$prod->userFavorite) ? '#fefefe' : '#ffff10')}};"></i>
+                                    </a>
+                            </div>
+                            <!--
                             <button class="svgright2 float-right btn  btn-clearblue" type="submit" style="display:none">Enviar Mensaje
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
                             <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098
                                 0,0.738 1.244,0 "></polygon>
                             </svg>
-                            </button>
-                        </div>
+                            </button>-->
 
                         </div>
+                    </div>
 
                     </div>
                     </div>
                     </div>
                 @endforeach
-
-                <div class="col-md-12 col-sm-12 mt-4 statelist ">
-                  <div class="card p-3 mb-3">
-                  <div class="row">
-                    <div class="col-md-6 col-sm-12 imageheight pl-3  ">
-                     <div class="updetail">Ocasión</div>
-                      <div class="dataSlide2">
-                        <div class="dataSlideinfo2">
-                          <span>6</span><i class="lnr lnr-camera"></i>
-                        </div>
-                      </div>
-                      <!--<div class="imgResponsive" style="background-image: url('https://via.placeholder.com/307x187');"></div>-->
-                       <section class="lazy slider" data-sizes="">
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x1870w" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <!-- this slide should inherit the sizes attr from the parent slider -->
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187">
-                        </div>
-                      </section>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 containerHeight pl-3">
-                      <strong class="d-inline-block text-clearblue elipsis"><h4>Casa</h4></strong>
-                      <div class="text-muted">Av. Petit Touars 234</div>
-                      <div class="text-muted">Miraflores.</div>
-                      <p class="text-detail mt-1 ">Excelente ubicación.</p>
-                      <p class="text-detail  ">312 m2 / 5+ Dorm / 5+ baños.</p>
-                      <div class="detailPrice">
-                        <h5 class="ltrulo float-left">US$ 200,000</h5>
-                        <button class="svgright2 float-right btn  btn-clearblue" type="submit">Enviar Mensaje
-                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
-                          <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098
-                            0,0.738 1.244,0 "></polygon>
-                          </svg>
-                        </button>
-                      </div>
-
-                    </div>
-
-                  </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 mt-4 statelist ">
-                  <div class="card p-3 mb-3">
-                  <div class="row">
-                    <div class="col-md-6 col-sm-12 imageheight pl-3  ">
-                     <div class="updetail">Ocasión</div>
-                      <div class="dataSlide2">
-                        <div class="dataSlideinfo2">
-                          <span>6</span><i class="lnr lnr-camera"></i>
-                        </div>
-                      </div>
-                      <!--<div class="imgResponsive" style="background-image: url('https://via.placeholder.com/307x187');"></div>-->
-                       <section class="lazy slider" data-sizes="">
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x1870w" >
-                        </div>
-                        <div>
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                        </div>
-                        <div>
-                          <!-- this slide should inherit the sizes attr from the parent slider -->
-                          <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187">
-                        </div>
-                      </section>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 containerHeight pl-3">
-                      <strong class="d-inline-block text-clearblue elipsis"><h4>Casa</h4></strong>
-                      <div class="text-muted">Av. Petit Touars 234</div>
-                      <div class="text-muted">Miraflores.</div>
-                      <p class="text-detail mt-1 ">Excelente ubicación.</p>
-                      <p class="text-detail  ">312 m2 / 5+ Dorm / 5+ baños.</p>
-                      <div class="detailPrice">
-                        <h5 class="ltrulo float-left">US$ 200,000</h5>
-                        <button class="svgright2 float-right btn  btn-clearblue" type="submit">Enviar Mensaje
-                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
-                          <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098
-                            0,0.738 1.244,0 "></polygon>
-                          </svg>
-                        </button>
-                      </div>
-
-                    </div>
-
-                  </div>
-                  </div>
-                </div>
-
               </div>
             </div>
           </div>
@@ -432,8 +373,19 @@
         }
         function deleteFilter(item,filtroActual){
             var url=location.href;
+            filtroActual=filtroActual.replace(new RegExp(' ', 'g'),"%20");
+            console.log(url);
+            console.log(filtroActual);
             url=url.replace("&"+item+"="+filtroActual,"");
+            url=url.replace("?"+item+"[]="+filtroActual,"?");
+            url=url.replace("&"+item+"[]="+filtroActual,"");
+            console.log(url);
+
             location.href=url;
         }
+
+        function changeOrderBy(url){
+            location.href=url.replace("XXX",$('#ddlSorted').val())
+}
     </script>
 @endsection

@@ -25,17 +25,14 @@
                   </div>
         <div class="col-md-3 mb-1">
           <select class="form-control" id="ddlCategory">
-            <option value="">Categoría</option>
-            @foreach($categories as $category)
-                    <option value="/{{$category->group->group}}/{{$category->category}}">{{$category->category}}</option>
-            @endforeach
+
           </select>
         </div>
         <div class="col-md-3 mb-1">
-                <select class="form-control" id="exampleFormControlSelect1">
+                <select onchange="changeOrderBy('{{ Request::fullUrlWithQuery(['brand[]' => 'XXX']) }}' )" id="ddlBrand" class="form-control" >
                       <option value="">Marca</option>
                       @foreach($brands as $brand)
-                          <option value="/{{$brand->brand}}">{{$brand->brand}}</option>
+                          <option value="{{$brand->brand}}">{{$brand->brand}}</option>
                       @endforeach
                   <!--<option>Marca</option>
                   <option>MANGO</option>
@@ -82,11 +79,11 @@
                     <div>
                         <div class="col-md-12 content ">
                         <div class="card mb-4 ">
-                            <a href="{{url('/p/'.$feat->short_name )}}">
+                            <a href="{{url('/p/'.Str::replaceFirst('/','--',$feat->short_name))}}">
                                 <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
                                 <div class="card-body">
-                                <div class="d-inline-block  text-clearblue uppercase tittleh1">{{$feat->short_name}} </div>
-                                <div class=" text-descr">{{$feat->short_name}}</div>
+                                <div class="d-inline-block  text-clearblue uppercase tittleh1" style="width: 95%;">{{$feat->short_name}} </div>
+                                <div class=" text-descr">{{$feat->info_brief}}</div>
                                 <p class="text-detail  mt-1 "><b> S/ {{$feat->price_list}}</b></p>
                                 </div>
                             </a>
@@ -123,11 +120,11 @@
                     <div>
                         <div class="col-md-12 content ">
                         <div class="card mb-4 ">
-                            <a href="{{url('/p/'.$fav->short_name)}}">
+                            <a href="{{url('/p/'.Str::replaceFirst('/','--',$fav->short_name))}}">
                                 <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
                                 <div class="card-body">
-                                <div class="d-inline-block  text-clearblue uppercase tittleh1">{{$fav->short_name}} </div>
-                                <div class=" text-descr">{{$fav->short_name}}</div>
+                                <div class="d-inline-block  text-clearblue uppercase tittleh1" style="width: 95%;">{{$fav->short_name}} </div>
+                                <div class=" text-descr" >{{$fav->info_brief}}</div>
                                 <p class="text-detail  mt-1 "><b> S/ {{$fav->price_list}}</b></p>
                                 </div>
                             </a>
@@ -151,12 +148,28 @@
         if($("#ddlGroup").val()!=""){
             urlBase=urlBase+$("#ddlGroup").val();
         }
+        /*
+        if($("#ddlCategory").val()!=""){
+            urlBase='{{url('/moda-search')}}';
+            urlBase=urlBase+$("#ddlCategory").val();
+        }
 
         if($("#ddlCategory").val()!=""){
             urlBase='{{url('/moda-search')}}';
             urlBase=urlBase+$("#ddlCategory").val();
         }
+        */
+
+        if($("#ddlBrand").val()!=""){
+            urlBase=urlBase+'?brand[]='+$("#ddlBrand").val();
+        }
         location.href=urlBase;
+    }
+
+
+
+    function searchMarca(url){
+                location.href=url.replace("XXX",$('#ddlSorted').val())
     }
 </script>
 @endsection

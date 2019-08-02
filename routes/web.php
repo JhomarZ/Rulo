@@ -44,6 +44,8 @@ Route::get('/moda-search/{group?}/{category?}/{subcategory?}', 'ModaController@F
 
 //RULO - PRODUCT
 Route::get('p/{name?}', 'ProductController@Detail')->name('productDetail');
+Route::post('p/favorite-save', 'ProductController@favoriteSave')->name('product.fav.save');
+Route::post('p/favorite-delete/{id}', 'ProductController@favoriteDelete')->name('product.fav.delete');
 
 
 //Rulo - SELLER

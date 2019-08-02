@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md-7 col-sm-12 filters">
                   Ver por:
-                  <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-map"></i></a>
+                  <!-- <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-map"></i></a>-->
                   <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-list"></i></a>
                   <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-th-large"></i></a>
                   <span class="last">
@@ -66,9 +66,7 @@
                   <button class="btn btn-outline-secondary" onclick="search()" type="button"><i class="fa fa-search"></i></button>
                 </div>
               </div>
-              <div class="input-group justify-content-end mb-3 col-md-8">
-                    {!! $products->appends(request()->query())->links('pagination::default') !!}
-              </div>
+
 
             </div>
             <div class="productosDetail col-md-9 col-sm-9 col-xs-9 p-0">
@@ -82,9 +80,15 @@
                             <div class="card mb-4 ">
                               <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
                               <div class="card-body">
-                              <div class="d-inline-block  text-clearblue uppercase tittleh1">{{$product->short_name}}</div>
-                                  <div class=" text-descr">{{$product->info_brief}}</div>
-                                  <p class="text-detail  mt-1 ">US$ {{$product->price_list}} - {{$product->price_sale}}</p>
+                              <div class="d-inline-block  text-clearblue uppercase tittleh1"
+                              style=" width: 90%;   overflow: hidden;
+                                  white-space: nowrap;
+                                  text-overflow: ellipsis;"
+                              >{{$product->short_name}}</div>
+                                  <div class=" text-descr"
+
+                                  >{{$product->info_brief}}</div>
+                                  <p class="text-detail  mt-1 ">S/ {{$product->price_list}} - {{$product->price_sale}}</p>
                               </div>
                             </div>
                             </a>
@@ -96,6 +100,10 @@
 
               </div>
             </div>
+
+            <div class="input-group justify-content-end mb-3 col-md-9">
+                    {!! $products->appends(request()->query())->links('pagination::default') !!}
+              </div>
             <!-- <div class="tittledetail row col-md-9 col-sm-9 col-xs-9">
               <div class="input-group justify-content-end mb-3 col-md-8">
                 <ul class="pagination  pagination-sm">

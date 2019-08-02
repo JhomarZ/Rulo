@@ -7,7 +7,7 @@
         <h3><i class="lnr lnr-user"></i>Perfil de usuario</h3>
         <ul>
           <li>
-            <button onclick="window.location.href='{{url('/perfil')}}'" class="btn active btn-lg float-right" type="submit"><span class=" lnr lnr-user"></span> Perfil </button>
+            <button onclick="window.location.href='{{url('/perfil/'.Auth::user()->id)}}'" class="btn active btn-lg float-right" type="submit"><span class=" lnr lnr-user"></span> Perfil </button>
           </li>
           <li style="display:none">
             <button onclick="window.location.href='{{url('/chat')}}'"  class="btn  btn-lg float-right" type="submit"><span class=" lnr lnr-envelope"></span> Mensajes <span class="badge">5</span></button>
@@ -16,7 +16,7 @@
             <button class="btn  btn-lg float-right" onclick="window.location.href='{{url('/perfil/favoritos/'.Auth::user()->id)}}'" type="submit"><span class="lnr lnr-star"></span> Favoritos </button>
           </li>
           <li>
-            <button class="btn  btn-lg float-right" type="submit"><span class="lnr lnr-flag"></span> Anuncios </button>
+            <button class="btn  btn-lg float-right" type="submit"><span class="lnr lnr-flag"></span> Pedidos </button>
           </li>
           <li>
             <button class="btn  btn-lg float-right" type="submit"><span class="lnr lnr-file-empty"></span> Suscripciones </button>
@@ -74,19 +74,30 @@
                     @enderror
                 </div>
                 <div class="col-md-12 mt-4">
-                  <label for="inputGenero" class="">Género(*):</label><br>
+                    <input type="hidden" value="" name="gender"  >
+                  <label for="gender" class="">Género(*):</label><br>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                    <label class="form-check-label" for="exampleRadios1">
+                    <input class="form-check-input" type="radio" name="gender" id="gender" value="F"
+                    {{ old('gender',$user->gender)=='F' ? 'checked':'' }}
+                    >
+                    <label class="form-check-label">
                     Femenino
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                    <label class="form-check-label" for="exampleRadios2">
+                    <input class="form-check-input" type="radio" name="gender" id="gender" value="M"
+                    {{ old('gender',$user->gender)=='M' ? 'checked':'' }}
+                    {{ old('gender',$user->gender)=='' ? 'checked':'' }}
+                    >
+                    <label class="form-check-label" >
                     Masculino
                     </label>
                   </div>
+                  @if ($errors->has('gender'))
+                  <span class="help-block">
+                  <strong>{{ $errors->first('gender') }}</strong>
+                  </span>
+                  @endif
                 </div>
                 <div class="col-md-6 mt-4">
                   <label for="inputEmail" class="">Tipo de documento(*):</label>
@@ -96,27 +107,27 @@
                   </select>
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="document_nro" class="">N° documento(*):</label>
-                  <input id="document_nro" name="document_nro" type="text" class="form-control @error('document_nro') is-invalid @enderror"  value="{{ old('document_nro',$user->document_nro)}}"  autocomplete="document_nro" autofocus>
-                    @error('document_nro')
+                  <label for="document_number" class="">N° documento(*):</label>
+                  <input id="document_number" name="document_number" type="text" class="form-control @error('document_number') is-invalid @enderror"  value="{{ old('document_number',$user->document_number)}}"  autocomplete="document_number" autofocus>
+                    @error('document_number')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="cellphone" class="">Teléfono(*):</label>
-                  <input id="cellphone" name="cellphone" type="tel" class="form-control @error('cellphone') is-invalid @enderror"  value="{{ old('cellphone',$user->cellphone)}}"  autocomplete="cellphone" autofocus>
-                    @error('cellphone')
+                  <label for="phone_movil" class="">Teléfono(*):</label>
+                  <input id="phone_movil" name="phone_movil" type="tel" class="form-control @error('phone_movil') is-invalid @enderror"  value="{{ old('phone_movil',$user->phone_movil)}}"  autocomplete="phone_movil" autofocus>
+                    @error('phone_movil')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="phone" class="">Fijo(*):</label>
-                  <input id="phone" name="phone" type="tel" class="form-control @error('phone') is-invalid @enderror"  value="{{ old('phone',$user->phone)}}"  autocomplete="phone" autofocus>
-                    @error('phone')
+                  <label for="phone_fix" class="">Fijo(*):</label>
+                  <input id="phone_fix" name="phone_fix" type="tel" class="form-control @error('phone_fix') is-invalid @enderror"  value="{{ old('phone_fix',$user->phone_fix)}}"  autocomplete="phone_fix" autofocus>
+                    @error('phone_fix')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

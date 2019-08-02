@@ -6,12 +6,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-
+use App\UserFavorite;
 class User extends Authenticatable
 {
     //protected $table="user";
 
     use HasApiTokens,Notifiable;
+
+    protected $table="user";
 
     /**
      * The attributes that are mass assignable.
@@ -40,4 +42,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function favouriteProducts()
+    {
+        return $this->hasMany(UserFavorite::class, 'user_id', 'id');
+        //return $this->hasOne(Brand::class, 'id', 'brand_id');
+    }
 }
