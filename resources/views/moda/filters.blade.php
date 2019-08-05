@@ -182,7 +182,7 @@
             <div class="colorBlue tittledetail col-md-12">
               <div class="row">
                 <div class="col-md-12 col-sm-12">
-                @if($filtroBrands!=null || $priceFilter!="")
+                @if($filtroBrands!=null || $priceFilter!="" || $p!="")
                   <h3 class="float-left">Filtros
                     <a href="{{Request::url().'?'}}"><i class="fa fa-trash"></i></a>
                     <!--<a href="#"><i class="fa fa-save"></i></a>-->
@@ -196,10 +196,9 @@
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
-                    @if($filtroBrands!=null || $priceFilter!="")
+                    @if($filtroBrands!=null || $priceFilter!="" || $p!="")
                     <ul class="filterActive ">
                                 @foreach($filtroBrands as $br)
-                                <!--<li>{{$br}} <a href="{{Str::replaceFirst("brand[]=".Str::replaceFirst(" ","%20",$br),"",Request::getRequestUri())}}">x</a></li>-->
                                  <li>{{$br}} <a href="javascript:deleteFilter('brand','{{$br}}')">x</a></li>
                                 @endforeach
 
@@ -207,6 +206,11 @@
                                  <!-- <li>{{$priceFilter}} <a href="{{Str::replaceFirst($priceFilter,"",Request::getRequestUri())}}">x</a></li>-->
                                  <input type="hidden" id="hddPriceFilter" value="{{$priceFilter}}" />
                                  <li>{{$priceFilter}} <a href="javascript:deleteFilter('price',$('#hddPriceFilter').val())">x</a></li>
+                                @endif
+
+                                @if($p!="")
+                                 <input type="hidden" id="hddProductName" value="{{$p}}" />
+                                 <li>{{$p}} <a href="javascript:deleteFilter('p',$('#hddProductName').val())">x</a></li>
                                 @endif
                     </ul>
                     @endif
@@ -257,34 +261,23 @@
                     <div class="card p-3 mb-3">
                     <div class="row">
                         <div class="col-md-6 col-sm-12 imageheight pl-3  ">
-                        <div class="updetail">
-                            Ocasión</div>
+                        @if($prod->discount!=null)
+                            <div class="updetail">
+                                {{round($prod->discount)}} %</div>
+                        @endif
                         <div class="dataSlide2">
                             <div class="dataSlideinfo2">
-                            <span>6</span><i class="lnr lnr-camera"></i>
+                            <!--<span>6</span>-->
+                            <i class="lnr lnr-camera"></i>
                             </div>
                         </div>
                         <!--<div class="imgResponsive" style="background-image: url('https://via.placeholder.com/307x187');"></div>-->
                         <section class="lazy slider" data-sizes="">
-                            <div>
-                            <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
+                            @foreach($prod->files as $file)
+                            <div style="max-height: 180px;">
+                            <img data-lazy="{{$file->image_list}}" data-srcset="{{$file->image_list}}, {{$file->image_list}}" >
                             </div>
-                            <div>
-                            <img data-lazy="https://via.placeholder.com/307x187" data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                            </div>
-                            <div>
-                            <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                            </div>
-                            <div>
-                            <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x1870w" >
-                            </div>
-                            <div>
-                            <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187" >
-                            </div>
-                            <div>
-                            <!-- this slide should inherit the sizes attr from the parent slider -->
-                            <img data-lazy="https://via.placeholder.com/307x187"  data-srcset="https://via.placeholder.com/307x187, https://via.placeholder.com/307x187">
-                            </div>
+                            @endforeach
                         </section>
                         </div>
 
@@ -377,6 +370,7 @@
             console.log(url);
             console.log(filtroActual);
             url=url.replace("&"+item+"="+filtroActual,"");
+            url=url.replace("?"+item+"="+filtroActual,"?");
             url=url.replace("?"+item+"[]="+filtroActual,"?");
             url=url.replace("&"+item+"[]="+filtroActual,"");
             console.log(url);

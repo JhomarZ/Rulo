@@ -10,12 +10,38 @@
                 <li><a class="active" href="{{url('/login')}}">Iniciar Sesión</a></li>
                 <li><a href="{{url('/register')}}">Crear Cuenta</a></li>
               </ul>
+              <div class="row mt-4">
+                <!-- <div class=" col-md-6 col-sm-12 ">
+                  <button class="btn maxonmd btn-lg btn-redfuria mt-3 float-right" type="submit"><i class=" fa fa-google-plus"></i> Inicia con Google </button>
+                </div>
+                -->
+                <div class="col-md-2 col-sm-0"></div>
+                <div class="col-md-8 col-sm-12">
+                  <button class="btn maxonmd btn-lg btn-bluedark btn-primary mt-3" type="submit"><i class=" fa fa-facebook"></i> Inicia con Facebook </button>
+                </div>
+                <div class="col-md-2 col-sm-0"></div>
+              </div>
+              <div class="col-md-12 col-sm-12 " style="margin-top:1.5rem">
+                  <hr style="background-color: #cdcdcd;
+                  height: 1px;
+                  margin-top: 0px !important;
+                  margin-bottom: 0px !important;">
+                  <span class="omb_spanOr" style="    display: block;
+                  position: absolute;
+                  left: 50%;
+                  top: -0.6em;
+                  margin-left: -1.5em;
+                  background-color: white;
+                  width: 3em;
+                  text-align: center;">o</span>
+                </div>
               <form class="brdr-box col-md-12" method="POST" action="{{ route('login') }}">
                     @csrf
+
                 <div class="row mb-3">
 
                   <div class="col-md-6 ">
-                    <label for="inputEmail" class="">{{ __('E-Mail Address') }}</label>
+                    <label for="inputEmail" class="">{{ __('E-Mail') }}</label>
                     <!--<input type="email" id="inputEmail" class="form-control"    autofocus>-->
                     <input id="inputEmail" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             @error('email')
@@ -26,7 +52,7 @@
                   </div>
 
                   <div class="col-md-6 ">
-                    <label for="inputPassword" class="">{{ __('Password') }}</label>
+                    <label for="inputPassword" class="">{{ __('Contraseña') }}</label>
                     <!--<input type="password" id="inputPassword" class="form-control"  >-->
                     <input id="inputPassword" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                         @error('password')
@@ -39,7 +65,7 @@
 
                 <a class="forgotLogin mt-3" href="#">Olvidé mi contraseña</a>
                 <div class="col-md-12 text-center ">
-                  <button class="btn btn-lg  btn-clearblue mb-3 mt-3" type="submit">{{ __('Login') }} <i class="icon-right fa fa-angle-right"></i></button>
+                  <button class="btn btn-lg  btn-clearblue mb-3 mt-3" type="submit">{{ __('Ingresar') }} <i class="icon-right fa fa-angle-right"></i></button>
                     @if (Route::has('password.request'))
                         <a class="btn btn-link" href="{{ route('password.request') }}">
                             {{ __('Forgot Your Password?') }}
@@ -47,15 +73,7 @@
                     @endif
                 </div>
                   <br>
-                <div class="row mt-4">
-                  <div class=" col-md-6 col-sm-12 ">
-                    <button class="btn maxonmd btn-lg btn-redfuria mt-3 float-right" type="submit"><i class=" fa fa-google-plus"></i> Inicia con Google </button>
-                  </div>
 
-                  <div class="col-md-6 col-sm-12">
-                    <button class="btn maxonmd btn-lg btn-bluedark btn-primary mt-3" type="submit"><i class=" fa fa-facebook"></i> Inicia con Facebook </button>
-                  </div>
-                </div>
 
               </form>
 

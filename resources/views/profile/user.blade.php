@@ -30,11 +30,15 @@
                 <div class=" d-flex align-items-center">
                   <div class="col-sm-3 m-0">
                    <div class="square">
+                    @if($user->image!="")
+                    <img class="profile-pic " src="{{$user->image}}">
+                    @else
                      <img class="profile-pic " src="{{url('/img/defaul-avatar.png')}}">
-                   </div>
+                    @endif
+                    </div>
                    <div class="p-image">
                      <i class="lnr lnr-camera upload-button"></i>
-                      <input class="file-upload" type="file" accept="image/*"/>
+                      <input class="file-upload" id="file" type="file" accept="image/*"/>
                    </div>
                   </div>
                 </div>
@@ -44,10 +48,11 @@
           <div class="col-sm-9">
           <form class=" pt-5 col-md-12" method="POST" action="{{url('/perfil/'.Auth::user()->id)}}" >
             @csrf
+            <input type="hidden" id="image" name="image" value="" />
               <h3>Datos de tu cuenta</h3>
               <div class="row mb-3">
                 <div class="col-md-6 mt-4">
-                  <label for="name" class="">Nombres(*):</label>
+                  <label for="name" class="">Nombres*:</label>
                   <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror"  value="{{ old('name',$user->name)}}" required autocomplete="name" autofocus>
                     @error('name')
                         <span class="invalid-feedback" role="alert">
@@ -56,7 +61,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="last_name" class="">Apellidos(*):</label>
+                  <label for="last_name" class="">Apellidos*:</label>
                   <input id="last_name" name="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror"  value="{{ old('last_name',$user->last_name)}}" required autocomplete="last_name" autofocus>
                     @error('last_name')
                         <span class="invalid-feedback" role="alert">
@@ -65,7 +70,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="nationality" class="">Nacionalidad(*)</label>
+                  <label for="nationality" class="">Nacionalidad*</label>
                   <input id="nationality" name="nationality" type="text" class="form-control @error('nationality') is-invalid @enderror"  value="{{ old('nationality',$user->nationality)}}" required autocomplete="nationality" autofocus>
                     @error('nationality')
                         <span class="invalid-feedback" role="alert">
@@ -74,8 +79,8 @@
                     @enderror
                 </div>
                 <div class="col-md-12 mt-4">
-                    <input type="hidden" value="" name="gender"  >
-                  <label for="gender" class="">Género(*):</label><br>
+                    <input type="hidden" value="M" name="gender"  >
+                  <label for="gender" class="">Género*:</label><br>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gender" id="gender" value="F"
                     {{ old('gender',$user->gender)=='F' ? 'checked':'' }}
@@ -100,14 +105,14 @@
                   @endif
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="inputEmail" class="">Tipo de documento(*):</label>
+                  <label for="inputEmail" class="">Tipo de documento*:</label>
                   <select class="form-control">
                     <option>DNI</option>
                     <option>Pasaporte</option>
                   </select>
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="document_number" class="">N° documento(*):</label>
+                  <label for="document_number" class="">N° documento*:</label>
                   <input id="document_number" name="document_number" type="text" class="form-control @error('document_number') is-invalid @enderror"  value="{{ old('document_number',$user->document_number)}}"  autocomplete="document_number" autofocus>
                     @error('document_number')
                         <span class="invalid-feedback" role="alert">
@@ -116,7 +121,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="phone_movil" class="">Teléfono(*):</label>
+                  <label for="phone_movil" class="">Teléfono*:</label>
                   <input id="phone_movil" name="phone_movil" type="tel" class="form-control @error('phone_movil') is-invalid @enderror"  value="{{ old('phone_movil',$user->phone_movil)}}"  autocomplete="phone_movil" autofocus>
                     @error('phone_movil')
                         <span class="invalid-feedback" role="alert">
@@ -125,7 +130,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mt-4">
-                  <label for="phone_fix" class="">Fijo(*):</label>
+                  <label for="phone_fix" class="">Fijo:</label>
                   <input id="phone_fix" name="phone_fix" type="tel" class="form-control @error('phone_fix') is-invalid @enderror"  value="{{ old('phone_fix',$user->phone_fix)}}"  autocomplete="phone_fix" autofocus>
                     @error('phone_fix')
                         <span class="invalid-feedback" role="alert">
@@ -151,4 +156,26 @@
     </div>
   </div>
 </main>
+
+<script>
+
+    // Galería
+function readFile() {
+  if (this.files && this.files[0]) {
+    var FR= new FileReader();
+    FR.addEventListener("load", function(e) {
+        console.log("base 64");
+        console.log(e.target.result);
+         document.getElementById("image").value = e.target.result;
+    });
+    FR.readAsDataURL( this.files[0] );
+  }
+}
+
+
+document.getElementById("file").addEventListener("change", readFile);
+
+
+
+</script>
 @endsection

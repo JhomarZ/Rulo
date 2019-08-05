@@ -5,7 +5,7 @@
           <img src="{{asset('img/isotipo.png')}}">
         </div>
         <div class="pt-5 col-sm-6 col-md-2">
-          <h5 class="tittlefoot">Acerca de Rulo</h5>
+          <h5 class="tittlefoot">Acerca de Comercio Planeta</h5>
           <ul class="list-unstyled subtittlefoot">
             <li><a class="" href="#">Sobre nosotros</a></li>
             <li><a class="" href="#">Formas de pago</a></li>
@@ -19,8 +19,8 @@
           <ul class="list-unstyled subtittlefoot">
             <li><a class="" href="#">Preguntas frecuentes</a></li>
             <li><a class="" href="#">Ayuda al cliente</a></li>
-            <li><a class="" href="#">Publicar en Rulo</a></li>
-            <li><a class="" href="#">Tienda en Rulo.com</a></li>
+            <li><a class="" href="#">Publicar en Comercio Planeta</a></li>
+            <li><a class="" href="#">Tienda en comercioplaneta.com</a></li>
             <li><a class="" href="{{url('/contacto')}}">Contacto</a></li>
           </ul>
         </div>

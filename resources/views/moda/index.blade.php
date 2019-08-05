@@ -15,30 +15,31 @@
     </div>
     <div class="col-md-9 bgnav ">
       <div class="row justify-content-md-center justify-content-sm-center">
-            <div class="col-md-3 mb-1">
+            <div class="col-md-4 mb-1">
                     <select class="form-control" id="ddlGroup">
-                      <option value="">Grupo</option>
+                      <!--<option value="">Grupo</option>-->
                       @foreach($groups as $group)
                               <option value="/{{$group->group}}">{{$group->group}}</option>
                       @endforeach
                     </select>
                   </div>
-        <div class="col-md-3 mb-1">
-          <select class="form-control" id="ddlCategory">
-
-          </select>
+        <div class="col-md-4 mb-1">
+                <input type="text" class="form-control" value="" id="txtSearch" placeholder="Ingresa título del producto" aria-label="Recipient&#39;s username" aria-describedby="basic-addon2">
+                <!--<div class="input-group-append">
+                  <button class="btn btn-outline-secondary" onclick="search()" type="button"><i class="fa fa-search"></i></button>
+                </div> -->
+          <!--
+            <select class="form-control" id="ddlCategory">
+          </select>-->
         </div>
-        <div class="col-md-3 mb-1">
+        <div class="col-md-1 mb-1">
+                <!--
                 <select onchange="changeOrderBy('{{ Request::fullUrlWithQuery(['brand[]' => 'XXX']) }}' )" id="ddlBrand" class="form-control" >
                       <option value="">Marca</option>
                       @foreach($brands as $brand)
                           <option value="{{$brand->brand}}">{{$brand->brand}}</option>
                       @endforeach
-                  <!--<option>Marca</option>
-                  <option>MANGO</option>
-                  <option>RALPH LAUREN</option>
-                  <option>VIOLETA</option>-->
-                </select>
+                </select>-->
               </div>
         <div class="col-md-3 mb-1">
           <button  onclick="goToSearchPage();"
@@ -64,7 +65,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12">
             <h3>
-              <img src="{{asset('img/polo.png')}}">Anuncios de moda destacados
+              <img src="{{asset('img/polo.png')}}">Productos más vistos
 
             </h3>
           </div>
@@ -80,11 +81,18 @@
                         <div class="col-md-12 content ">
                         <div class="card mb-4 ">
                             <a href="{{url('/p/'.Str::replaceFirst('/','--',$feat->short_name))}}">
-                                <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
+                                @if($feat->files->count()>0)
+                                    <img style="max-height: 200px;" class="card-img-top" src="{{$feat->files[0]->image_list}}" data-holder-rendered="true">
+                                @else
+                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                @endif
+
                                 <div class="card-body">
                                 <div class="d-inline-block  text-clearblue uppercase tittleh1" style="width: 95%;">{{$feat->short_name}} </div>
                                 <div class=" text-descr">{{$feat->info_brief}}</div>
-                                <p class="text-detail  mt-1 "><b> S/ {{$feat->price_list}}</b></p>
+                                <p class="text-detail  mt-1 ">
+                                    <b>S/ <span style="text-decoration: line-through;">{{$feat->price_list}}</span> &nbsp; {{$feat->price_sale}}</b>
+                                </p>
                                 </div>
                             </a>
                         </div>
@@ -105,7 +113,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12">
             <h3>
-              <img src="{{asset('img/polo.png')}}">Anuncios de moda favoritos
+              <img src="{{asset('img/polo.png')}}">Productos más vendidos
 
             </h3>
           </div>
@@ -121,11 +129,20 @@
                         <div class="col-md-12 content ">
                         <div class="card mb-4 ">
                             <a href="{{url('/p/'.Str::replaceFirst('/','--',$fav->short_name))}}">
-                                <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
+                                @if($fav->files->count()>0)
+                                    <img style="max-height: 200px;" class="card-img-top" src="{{$fav->files[0]->image_list}}" data-holder-rendered="true">
+                                @else
+                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                @endif
+
+
+
                                 <div class="card-body">
                                 <div class="d-inline-block  text-clearblue uppercase tittleh1" style="width: 95%;">{{$fav->short_name}} </div>
                                 <div class=" text-descr" >{{$fav->info_brief}}</div>
-                                <p class="text-detail  mt-1 "><b> S/ {{$fav->price_list}}</b></p>
+                                <p class="text-detail  mt-1 ">
+                                        <b>S/ <span style="text-decoration: line-through;">{{$feat->price_list}}</span> &nbsp; {{$feat->price_sale}}</b>
+                                </p>
                                 </div>
                             </a>
                         </div>
@@ -148,6 +165,9 @@
         if($("#ddlGroup").val()!=""){
             urlBase=urlBase+$("#ddlGroup").val();
         }
+        if($("#txtSearch").val()!=""){
+            urlBase=urlBase+'?p='+$("#txtSearch").val();
+        }
         /*
         if($("#ddlCategory").val()!=""){
             urlBase='{{url('/moda-search')}}';
@@ -158,18 +178,22 @@
             urlBase='{{url('/moda-search')}}';
             urlBase=urlBase+$("#ddlCategory").val();
         }
-        */
+
 
         if($("#ddlBrand").val()!=""){
             urlBase=urlBase+'?brand[]='+$("#ddlBrand").val();
         }
+        */
         location.href=urlBase;
     }
 
-
+    function search(){
+            location.href=$("#hddUrl").val()+"q="+$("#txtSearch").val();
+    }
 
     function searchMarca(url){
                 location.href=url.replace("XXX",$('#ddlSorted').val())
     }
 </script>
+
 @endsection

@@ -1,3 +1,4 @@
+var keyTypeView="typeViewProducts";
 // offcanvas menu
 $(function () {
 	'use strict'
@@ -31,6 +32,7 @@ $(document).ready(function() {
     $(".upload-button").on('click', function() {
        $(".file-upload").click();
     });
+
 });
 
 $("#editarAnuncio").slideReveal({
@@ -350,7 +352,8 @@ $('#btn25').on('click', function(){
 })
 
 $('.blockFilter').on('click', function(){
-  if($(".statelist").hasClass("col-md-12 col-sm-12")) {
+    localStorage.setItem('typeViewProducts', 'blockFilter');
+    if($(".statelist").hasClass("col-md-12 col-sm-12")) {
     // $("#navbarToggleExternalContent").css("display","none");
     $(".statelist").removeClass("col-md-12 col-sm-12");
     $(".statelist").addClass("col-md-6 col-sm-12");
@@ -365,6 +368,8 @@ $('.blockFilter').on('click', function(){
 
 
 $('.listFilter').on('click', function(){
+  localStorage.setItem('typeViewProducts', 'listFilter');
+
   if($(".statelist").hasClass("col-md-6 col-sm-12")) {
      // $("#navbarToggleExternalContent").css("display","none");
      // $("#navbarToggleExternalContent").css("display","block");
@@ -380,6 +385,13 @@ $('.listFilter').on('click', function(){
   }
 })
 
+$(document).ready(function() {
+    console.log("key key key");
+    console.log(localStorage.getItem(keyTypeView));
+    if(localStorage.getItem(keyTypeView)!=null){
+        $("."+localStorage.getItem(keyTypeView)).click();
+    }
+});
 $('.crossChat').on('click', function(){
   if ( $(".crossChat").hasClass("active") ) {
     $(".crossChat").removeClass("active");

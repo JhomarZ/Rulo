@@ -18,6 +18,7 @@ class ProductController extends Controller
         ->with("attributes.attribute")
         ->with("brand")
         ->with("group")
+        ->with("files")
         ->with("category")
         ->with("subCategory")
         ->with("seller")

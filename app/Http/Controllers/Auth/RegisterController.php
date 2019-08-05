@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -28,7 +31,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/welcome';
+
 
     /**
      * Create a new controller instance.
@@ -37,7 +41,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest', ['only' => ['register']]);
+        //$this->middleware('guest');
     }
 
     /**
@@ -71,7 +76,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+       return  User::create([
             'name' => $data['name'],
             'last_name' => $data['last_name'],
             'document_number' => $data['document_number'],
@@ -81,5 +86,35 @@ class RegisterController extends Controller
             "accept_terms" => $data['accept_terms']
         ]);
 
+    }
+
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        //dd($this->redirectPath());
+        //return;
+        event(new Registered($user = $this->create($request->all())));
+        //Auth::login($user);
+        $this->guard()->login($user,true);
+        //Auth::loginUsingId($user->id);
+        return redirect("/welcome")->with('username',$request->name);
+        //return $this->registered($request, $user)
+         //           ?: redirect("/welcome")->with('username',$request->name);
+    }
+
+    protected function redirectTo()
+    {
+        return "/welcome";
+    }
+
+    /*protected function registered(Request $request, $user)
+    {
+        return Auth::loginUsingId($user->id);
+    }*/
+
+    protected function showWelcomePage()
+    {
+        return view('auth.welcome');
     }
 }

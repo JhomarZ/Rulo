@@ -36,11 +36,15 @@
           <div id="second" class="col-md-8 col-sm-12 flex-md-row flex-md-row-reverse  ">
              <div class="SliderPrincipal">
               <section class="slider-for " data-sizes="50vw">
-                <div>
-                  <a id="firstlink" class="venobox" data-gall="myGallery" href="http://placehold.it/747x456?text=1-350w">
-                    <img data-lazy="http://placehold.it/747x456?text=1-350w" data-sizes="100vw">
-                  </a>
-                </div>
+                @foreach($product->files as $file)
+                    <div>
+                        <a id="firstlink" class="venobox" data-gall="myGallery"
+                        href="{{$file->image_list}}">
+                          <img style="max-height: 400px;" data-lazy="{{$file->image_list}}" data-sizes="100vw">
+                        </a>
+                      </div>
+                @endforeach
+                <!--
                 <div>
                   <a class="venobox" data-gall="myGallery" href="http://placehold.it/747x456?text=2-350w">
                     <img data-lazy="http://placehold.it/747x456?text=2-350w" data-sizes="100vw">
@@ -66,6 +70,7 @@
                     <img data-lazy="http://placehold.it/747x456?text=6-350w"  data-sizes="100vw">
                   </a>
                 </div>
+                -->
               </section>
               <div class="dataSlide">
                 <div class="dataSlideinfo">
@@ -73,7 +78,12 @@
                   <a id="loadGallery" ><i  class=" lnr lnr-move" data-gall="gall1" data-title="inline content" data-vbtype="inline" href="#inline-content"></i></a></div>
               </div>
               <section id="totalSlides" class="slider-nav">
-                <div>
+                @foreach($product->files as $file)
+                    <div>
+                        <img style="max-heigth:55px" src="{{$file->image_list}}">
+                    </div>
+                @endforeach
+                <!-- <div>
                   <img src="http://placehold.it/747x456?text=1">
                 </div>
                 <div>
@@ -90,7 +100,7 @@
                 </div>
                 <div>
                   <img src="http://placehold.it/747x456?text=6">
-                </div>
+                </div>-->
               </section>
               </div>
 
@@ -128,7 +138,7 @@
                       </tr>
               </tbody>
             </table>
-
+            @if($product->attributes->count()>0)
             <div class="mt-2 boxotherdetail">
                     <h3>CARACTERISTICAS ADICIONALES</h3>
                     <ul>
@@ -137,6 +147,7 @@
                         @endforeach
                     </ul>
             </div>
+            @endif
 
             <!--
             <h3>Mapa
@@ -164,7 +175,7 @@
                           <img class="responsive" src="{{asset('img/logoEmpresa.png')}}">
                         </div>
                         <div class="rightEnca col-md-7 col-sm-8">
-                                <a href="{{url('/seller/'.$product->seller->id)}}">
+                                <a target="_blank" href="{{url('/seller/'.$product->seller->id)}}">
                             <h2>{{$product->seller->commercial_name}}</h2>
                         </a>
                           <h6><i class="fa fa-phone-square">

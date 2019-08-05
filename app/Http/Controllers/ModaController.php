@@ -22,10 +22,12 @@ class ModaController extends Controller
         $subCategories=[];
 
         $favorites= Product::orderBy('total_sales', 'desc')
+        ->with("files")
         ->take(8)
         ->get();
 
         $featured= Product::orderBy('total_saw', 'desc')
+        ->with("files")
         ->take(8)
         ->get();
 
@@ -49,9 +51,12 @@ class ModaController extends Controller
     public function Filters(Request $request,$group="",$category="",$subcategory=""){
         $sort="total_saw";
         //Filtros
-        $brandsFilter=[]; $priceFilter="";
+        $brandsFilter=[]; $priceFilter=""; $productName="";
         //return;
         $brands=[]; $groups=[]; $categories=[]; $products=[]; $filtros=[];
+
+        $productName= $request->has('p')?$request->p:"";
+
 
         if($request->has('sorted')){
             $sort=$request->sorted;
@@ -89,7 +94,7 @@ class ModaController extends Controller
                 $pc=ProductCategory::find($cat->category_id);
                 $cat["category"]=$pc->category;
             }
-
+            // FIN OBTENEMOS LAS CATEGORIAS SEGUN EL RESULTADO
 
             //OBTENEMOS LOS BRANDS SEGUN EL RESULTADO
             $brands=Product::query()->when($group!="", function ($query) use ($group) {
@@ -108,9 +113,9 @@ class ModaController extends Controller
                 $br=Brand::find($brand->brand_id);
                 $brand["brand"]=$br->brand;
             }
+             //FIN OBTENEMOS LOS BRANDS SEGUN EL RESULTADO
 
-
-        $products=Product::query()->when($group!="", function ($query) use ($group) {
+                $products=Product::query()->when($group!="", function ($query) use ($group) {
                     $pg=ProductGroup::where('group','=',$group)->first();
                     if($pg!=null)
                     return $query->where('group_id','=',$pg->id);
@@ -120,6 +125,9 @@ class ModaController extends Controller
                     if($cat!=null)
                     return $query->where('category_id','=',$cat->id);
                 })
+                ->when($productName, function ($query) use ($productName) {
+                    return $query->where('short_name','like','%'.$productName.'%');
+                  })
                 ->when($brandsId!=[], function ($query) use ($brandsId) {
                     return $query->whereIn('brand_id',$brandsId);
                 })
@@ -136,6 +144,7 @@ class ModaController extends Controller
                     $products->with("userFavorite");
                 }
 
+
         $products=$products->when($sort!="", function ($query) use ($sort) {
             if($sort=="DESC" || $sort=="ASC"){
                 return $query->orderBy('price_sale',$sort);
@@ -145,7 +154,7 @@ class ModaController extends Controller
 
         $products=$products->paginate(8);
 
-
+        //dd($products[0]->files); return;
 
         $groups= ProductGroup::all();
 
@@ -163,6 +172,7 @@ class ModaController extends Controller
         ->with('filtros',$filtros)
         ->with('filtroBrands',$brandsFilter)
         ->with('priceFilter',$priceFilter)
+        ->with('p',$productName)
         ->with('products',$products);
     }
 

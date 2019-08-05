@@ -38,11 +38,21 @@
                 <div class="col-md-7 col-sm-12 filters">
                   Ver por:
                   <!-- <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-map"></i></a>-->
-                  <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-list"></i></a>
-                  <a href="https://sofiavillazon.github.io/ruloTemplate/perfilVendedor.html#"><i class="fa fa-th-large"></i></a>
+                    <a class="listFilter" href="#"><i class="fa fa-list"></i></a>
+                    <a class="blockFilter" href="#"><i class="fa fa-th-large"></i></a>
                   <span class="last">
                     <select  onchange="changeOrderBy('{{ Request::fullUrlWithQuery(['sorted' => 'XXX']) }}' )" class="form-control" id="ddlSorted">
-                        <option value="" selected="">Relevancia</option>
+                        <!--<option value="" selected="">Relevancia</option>-->
+                        @if(request("sorted")=="total_saw")
+                            <option value="total_saw" selected="selected">Mas vistos</option>
+                        @else
+                            <option value="total_saw" >Mas vistos</option>
+                        @endif
+                        @if(request("sorted")=="total_sales")
+                            <option value="total_sales" selected="selected">Mas vendidos</option>
+                        @else
+                            <option value="total_sales" >Mas vendidos</option>
+                        @endif
                         @if(request("sorted")=="DESC")
                             <option value="DESC" selected="selected">De mayor a menor</option>
                         @else
@@ -53,6 +63,8 @@
                         @else
                             <option value="ASC" >De menor a mayor</option>
                         @endif
+
+
                     </select>
                   </span>
 
@@ -78,7 +90,13 @@
                         <div class="col-md-3 content " style="display: block;">
                             <a href="{{url('/p/'.$product->short_name)}}">
                             <div class="card mb-4 ">
-                              <img class="card-img-top" src="http://placehold.it/747x456?text=1-350w" data-holder-rendered="true">
+                                @if($product->files->count()>0)
+                                    <img style="max-height: 90px" class="card-img-top" src="{{$product->files[0]->image_list}}" data-holder-rendered="true">
+                                @else
+                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                @endif
+
+
                               <div class="card-body">
                               <div class="d-inline-block  text-clearblue uppercase tittleh1"
                               style=" width: 90%;   overflow: hidden;
@@ -88,7 +106,9 @@
                                   <div class=" text-descr"
 
                                   >{{$product->info_brief}}</div>
-                                  <p class="text-detail  mt-1 ">S/ {{$product->price_list}} - {{$product->price_sale}}</p>
+                                  <p class="text-detail  mt-1 ">
+                                      s/  <span style="text-decoration: line-through;">{{$product->price_list}}</span> &nbsp; {{$product->price_sale}}
+                                   </p>
                               </div>
                             </div>
                             </a>

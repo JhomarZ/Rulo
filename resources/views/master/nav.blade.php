@@ -14,11 +14,14 @@
                 </a>
               </li>
               <li class="nav-item">
-                <img src="{{asset('img/icon-user.png')}}"><span>
                     @auth
-                        <a class="nav-link" href="{{url('/perfil/'.Auth::user()->id)}}">{{Auth::user()->name}}</span></a>
+                        <a class="nav-link" href="{{url('/perfil/'.Auth::user()->id)}}">
+                            <img src="{{asset('img/icon-user.png')}}"><span>
+                            {{Auth::user()->name}}</span></a>
                     @else
-                        <a class="nav-link" href="{{url('/login')}}">Usuario</span></a>
+                        <a class="nav-link" href="{{url('/login')}}">
+                            <img src="{{asset('img/icon-user.png')}}"><span>
+                            Usuario</span></a>
                     @endauth
               </li>
               <li class="nav-item">
@@ -27,9 +30,10 @@
               </li>
               @auth
                     <li class="nav-item">
-                        <img src="{{asset('img/logout.png')}}"><span>
                         <a class="nav-link" href="{{url('/logout')}}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">Salir</span></a>
+                        document.getElementById('logout-form').submit();">
+                        <img src="{{asset('img/logout.png')}}"><span>
+                        Salir</span></a>
                     </li>
 
                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

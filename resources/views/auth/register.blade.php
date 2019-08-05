@@ -80,7 +80,7 @@
           </div>
           <div class="col-md-12 text-center ">
             <button type="submit" class="btn btn-lg  btn-clearblue mb-3 mt-3">
-                    Completar Registro <i class="icon-right fa fa-angle-right"></i>
+                    Registrar <i class="icon-right fa fa-angle-right"></i>
                 </button>
           </div>
 

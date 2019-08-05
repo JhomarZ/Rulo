@@ -35,6 +35,7 @@ Route::get('/perfil/favoritos/{id}', 'ProfileController@favoritesPage');
 
 //Rulo - Auth - Register
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::get('welcome', 'Auth\RegisterController@showWelcomePage')->name('welcome');//->middleware('auth');
 Route::post('register', 'Auth\RegisterController@register');
 
 //RULO - MODA

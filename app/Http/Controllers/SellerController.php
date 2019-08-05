@@ -12,7 +12,7 @@ class SellerController extends Controller
 
     public function index(Request $request,$id){
 
-        $filtro=""; $sort="";
+        $filtro=""; $sort="total_saw";
         $productoDesc="";
 
         if($request->has('sorted')){
@@ -26,15 +26,16 @@ class SellerController extends Controller
         $seller=Seller::find($id);
         $products=Product::query()->when($productoDesc!="", function ($query) use ($productoDesc) {
             return $query->where('short_name',"like",'%'.$productoDesc.'%');
-        })
-        ->when($sort!="", function ($query) use ($sort) {
+        })->where("seller_id","=",$id);
+
+        $products=$products->when($sort!="", function ($query) use ($sort) {
             if($sort=="DESC" || $sort=="ASC"){
                 return $query->orderBy('price_sale',$sort);
             }
             return $query->orderBy($sort,"DESC");
-        })
-        ->where("seller_id","=",$id)
-        ->orderBy('id',request("sorted","DESC"))
+        });
+
+        $products=$products->with("files")
         ->paginate(8);
 
         //dd($products->nextPageUrl());

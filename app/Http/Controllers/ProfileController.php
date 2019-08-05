@@ -4,13 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 use App\User;
 use App\UserFavorite;
+
+
+
 class ProfileController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function userPage($id){
         $user=User::find($id);
+        $user["image"]="";
+        $user["image"]=$this->getImageUrl($user);
 
         return view("profile.user")
         ->with("user",$user);
@@ -18,7 +31,9 @@ class ProfileController extends Controller
 
     public function favoritesPage($id){
         $favorites=UserFavorite::where("user_id","=",$id)
-        ->with("product")->get();
+        ->with("product")
+        ->with("product.files")
+        ->get();
         //->paginate(4);
 
        // return $favorites;
@@ -38,7 +53,11 @@ class ProfileController extends Controller
 
     protected function updateUser(Request $request,$id)
     {
-        //dd($request->all()); return;
+
+
+        $extensionImage=""; $imageB64="";
+
+
         $this->validatorUserUpdate($request->all())->validate();
         $user=User::find($id);
         $user->name=$request['name'];
@@ -50,18 +69,30 @@ class ProfileController extends Controller
         $user->phone_movil=$request['phone_movil'];
         $user->phone_fix=$request['phone_fix'];
         $user->save();
+
+        if($request->image!="" && $request->image!=null){
+            $imageB64=$request->image;
+            $extensionImage=Str::substr($imageB64, 11,3);
+            $imageB64=Str::after($imageB64, ',');
+            $imageName = $id. '.'.$extensionImage;
+          //  File::delete($filename);
+            Storage::disk('public')->put("users/".$imageName, base64_decode($imageB64));
+        }
+        $user["image"]=$this->getImageUrl($user);
         return view("profile.user")
         ->with("user",$user);
-        /*
-        return User::create([
-            'name' => $data['name'],
-            'last_name' => $data['last_name'],
-            'document_nro' => $data['document_nro'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        return view("profile.user"); */
     }
+
+    protected function getImageUrl(User $user)
+    {
+        if(Storage::disk('public')->exists("users/".$user->id.".png")){
+            return url("storage/"."users/".$user->id.".png")."?v=".Carbon::now()->format('YmdHs');;
+        }
+        if(Storage::disk('public')->exists("users/".$user->id.".jpg")) {
+            return url("storage/"."users/".$user->id.".jpg")."?v=".Carbon::now()->format('YmdHs');;
+        }
+        return "";
+    }
+
 
 }
