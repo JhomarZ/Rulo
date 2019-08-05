@@ -10,29 +10,29 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url('/')}}">
                 <img src="{{asset('img/icon-tienda.png')}}">
-                <span> Tienda </span>
+                <span style="font-weight: bold;"> Tienda </span>
                 </a>
               </li>
               <li class="nav-item">
                     @auth
                         <a class="nav-link" href="{{url('/perfil/'.Auth::user()->id)}}">
-                            <img src="{{asset('img/icon-user.png')}}"><span>
+                            <img src="{{asset('img/icon-user.png')}}"><span style="font-weight: bold;">
                             {{Auth::user()->name}}</span></a>
                     @else
                         <a class="nav-link" href="{{url('/login')}}">
-                            <img src="{{asset('img/icon-user.png')}}"><span>
+                            <img src="{{asset('img/icon-user.png')}}"><span style="font-weight: bold;">
                             Usuario</span></a>
                     @endauth
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                <img src="{{asset('img/icon-alert.png')}}"><span>Notificación</span></a>
+                <img src="{{asset('img/icon-alert.png')}}"><span style="font-weight: bold;">Notificación</span></a>
               </li>
               @auth
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/logout')}}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
-                        <img src="{{asset('img/logout.png')}}"><span>
+                        <img src="{{asset('img/logout.png')}}"><span style="font-weight: bold;">
                         Salir</span></a>
                     </li>
 

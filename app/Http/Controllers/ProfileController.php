@@ -86,10 +86,10 @@ class ProfileController extends Controller
     protected function getImageUrl(User $user)
     {
         if(Storage::disk('public')->exists("users/".$user->id.".png")){
-            return url("storage/"."users/".$user->id.".png")."?v=".Carbon::now()->format('YmdHs');;
+            return url("users/".$user->id.".png")."?v=".Carbon::now()->format('YmdHs');;
         }
         if(Storage::disk('public')->exists("users/".$user->id.".jpg")) {
-            return url("storage/"."users/".$user->id.".jpg")."?v=".Carbon::now()->format('YmdHs');;
+            return url("users/".$user->id.".jpg")."?v=".Carbon::now()->format('YmdHs');;
         }
         return "";
     }

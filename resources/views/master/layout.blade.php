@@ -15,7 +15,9 @@
     <!-- Add the slick-theme.css if you want default styling -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/slick-theme.css')}}"/>
   </head>
+
   <body>
+
     @include('master.nav')
       @yield('content')
       <div class="chatFlotante " style="display:none">

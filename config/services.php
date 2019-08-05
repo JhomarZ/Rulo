@@ -43,5 +43,10 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'facebook' => [
+        'client_id' => '2304000486332540',
+        'client_secret' => 'f21165d6344b8fe6c8037c639539b7c2',
+        'redirect' => 'https://www.tutsmake.com/laravel-example/callback/facebook',
+    ],
 
 ];

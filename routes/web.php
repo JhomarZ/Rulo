@@ -38,6 +38,7 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 Route::get('welcome', 'Auth\RegisterController@showWelcomePage')->name('welcome');//->middleware('auth');
 Route::post('register', 'Auth\RegisterController@register');
 
+
 //RULO - MODA
 Route::get('/moda', 'ModaController@Index')->name('moda'); // API
 Route::get('/moda-search', 'ModaController@Filters')->name('modafilters');

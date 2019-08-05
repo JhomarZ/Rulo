@@ -38,11 +38,15 @@ class ProductController extends Controller
     }
 
     public function favoriteSave(Request $request){
-       $favorite = new UserFavorite;
-        $favorite->user_id = auth()->user()->id;
-        $favorite->product_id = request("product_id");
-        $favorite->save();
-        return back();
+        if(auth()->check()){
+            $favorite = new UserFavorite;
+            $favorite->user_id = auth()->user()->id;
+            $favorite->product_id = request("product_id");
+            $favorite->save();
+            return back();
+        }
+        return redirect("/login");
+
     }
 
     public function favoriteDelete(Request $request,$id){
