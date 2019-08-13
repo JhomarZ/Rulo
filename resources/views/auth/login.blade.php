@@ -17,7 +17,9 @@
                 -->
                 <div class="col-md-2 col-sm-0"></div>
                 <div class="col-md-8 col-sm-12">
-                  <button class="btn maxonmd btn-lg btn-bluedark btn-primary mt-3" type="submit"><i class=" fa fa-facebook"></i> Inicia con Facebook </button>
+                    <a href="{{ url('/auth/redirect/facebook') }}" >
+                        <button class="btn maxonmd btn-lg btn-bluedark btn-primary mt-3" type="submit"><i class=" fa fa-facebook"></i> Inicia con Facebook </button>
+                    </a>
                 </div>
                 <div class="col-md-2 col-sm-0"></div>
               </div>

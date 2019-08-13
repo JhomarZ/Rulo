@@ -44,9 +44,9 @@ return [
         ],
     ],
     'facebook' => [
-        'client_id' => '2304000486332540',
-        'client_secret' => 'f21165d6344b8fe6c8037c639539b7c2',
-        'redirect' => 'https://www.tutsmake.com/laravel-example/callback/facebook',
+        'client_id' => env('FACEBOOK_ID'),
+        'client_secret' => env('FACEBOOK_SECRET'),
+        'redirect' => env('FACEBOOK_URL'),
     ],
 
 ];

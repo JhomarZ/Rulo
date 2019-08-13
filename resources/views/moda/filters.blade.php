@@ -51,7 +51,7 @@
                         @foreach($groups as $gr)
                                 <a href="{{url('/moda-search/'.$gr->group ).'?'}}">
                                     @if (!empty($group) && $gr->group==$group)
-                                        <b>{{$gr->group}}<span class="tittledark">({{$gr->total_products}})</span></b>
+                                        <b> {{$gr->group}}<span class="tittledark">({{$gr->total_products}})</span></b>
                                     @else
                                         {{$gr->group}}<span class="tittledark">({{$gr->total_products}})</span>
                                     @endif
@@ -74,19 +74,35 @@
                   <div class="card card-body">
                         <a href="{{url('/moda-search/'.$group ).'?'}}">
                             @if (empty($category))
-                                <b>Todos <!--<span class="tittledark">({{$products->total()}})</span>--></b>
+                                <b> Todos <!--<span class="tittledark">({{$products->total()}})</span>--></b>
                             @else
                                 Todos<!--<span class="tittledark">({{$products->total()}})--></span>
                             @endif
                         </a>
                     @foreach($categories as $cat)
-                        <a href="{{url('/moda-search/'.$group.'/'.$cat->category ).'?'}}">
+
                             @if (!empty($category) && $cat->category==$category)
-                                <b>{{$cat->category}} <span class="tittledark">({{$cat->total}})</span></b>
+                            <a href="{{url('/moda-search/'.$group.'/'.$cat->category ).'?'}}">
+                                <b>- {{$cat->category}} <span class="tittledark">({{$cat->total}})</span></b>
+                            </a>
+                                @if ($cat!=null)
+                                    @foreach($cat->subcategories as $sub)
+
+                                        <a style="margin-left: 15px;" href="{{url('/moda-search/'.$group.'/'.$cat->category.'/'.$sub->subcategory ).'?'}}">
+                                            @if (!empty($subcategory) && $sub->subcategory==$subcategory)
+                                                <b>{{$sub->subcategory}} <span class="tittledark">({{$sub->total}})</span></b>
+                                            @else
+                                                {{$sub->subcategory}} <span class="tittledark">({{$sub->total}})</span>
+                                            @endif
+                                        </a>
+                                    @endforeach
+                                @endif
                             @else
-                                {{$cat->category}} <span class="tittledark">({{$cat->total}})</span>
+                            <a href="{{url('/moda-search/'.$group.'/'.$cat->category ).'?'}}">
+                                + {{$cat->category}} <span class="tittledark">({{$cat->total}})</span>
+                            </a>
                             @endif
-                        </a>
+
                     @endforeach
                   </div>
                 </div>
@@ -149,13 +165,15 @@
             </div>
             <!-- -- -->
             <div class="tittlePress">
-              <a class="" data-toggle="collapse" href="#collapse4" role="button" aria-expanded="false" aria-controls="collapse4">Marcas
+              <a class="" data-toggle="collapse" href="#collapseMarcas" role="button" aria-expanded="false" aria-controls="collapseMarcas">Marcas
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
                  <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098 0,0.738 1.244,0 "></a>
             </div>
+
+            <!-- FILTROS BRANDS -->
             <div class="row">
               <div class="col">
-                <div class="collapse show" id="collapse4">
+                <div class="collapse show" id="collapseMarcas">
                   <div class="card card-body">
 
                     @foreach($brands as $brand)
@@ -164,14 +182,44 @@
                         @else
 
                         <a href="javascript:addFilter('brand[]','','{{$brand->brand}}')" >{{$brand->brand}} <span class="tittledark">({{$brand->total}})</span></a>
-                            <!-- <a href="{{Request::getRequestUri().'&brand[]='.$brand->brand}}" >{{$brand->brand}} <span class="tittledark">({{$brand->total_products}})</span></a>-->
                         @endif
                     @endforeach
                   </div>
                 </div>
               </div>
             </div>
-            <!-- -- -->
+            <!-- FIN FILTROS BRANDS -->
+
+            <!-- FILTROS ATRIBUTOS -->
+            @foreach($attributes as $attr)
+
+
+            <div class="tittlePress">
+            <a class="" data-toggle="collapse" href="#collapse{{$attr->attribute}}" role="button" aria-expanded="false" aria-controls="collapse{{$attr->attribute}}">{{$attr->attribute}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
+                   <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098 0,0.738 1.244,0 "></a>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                  <div class="collapse show" id="collapse{{$attr->attribute}}">
+                    <div class="card card-body">
+
+                        @foreach($attr->items as $item)
+                        @if( Request::get($attr->attribute, "") == $item->value)
+                            <a href="#" ><b>{{$item->value}}</b> <span class="tittledark">({{$item->total}})</span></a>
+                        @else
+                        <a href="javascript:addFilter('{{$attr->attribute}}','','{{$item->value}}')" >{{$item->value}} <span class="tittledark">({{$item->total}})</span></a>
+                        @endif
+                      @endforeach
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @endforeach
+              <!-- FIN FILTROS ATRIBUTOS -->
+
 
 
             <!-- -- -->
@@ -198,6 +246,13 @@
                 <div class="col-md-12 col-sm-12">
                     @if($filtroBrands!=null || $priceFilter!="" || $p!="")
                     <ul class="filterActive ">
+
+                                @foreach($attributes as $paramAtt)
+                                    @if(Request::has($paramAtt->attribute))
+                                    <li>{{app('request')->input($paramAtt->attribute)}} <a href="javascript:deleteFilter('{{$paramAtt->attribute}}','{{app('request')->input($paramAtt->attribute)}}')">x</a></li>
+                                    @endif
+                                @endforeach
+
                                 @foreach($filtroBrands as $br)
                                  <li>{{$br}} <a href="javascript:deleteFilter('brand','{{$br}}')">x</a></li>
                                 @endforeach
@@ -295,9 +350,9 @@
                         <!--<div class="text-muted">Miraflores.</div>
                         <p class="text-detail mt-1 ">{{$prod->short_name}}</p>-->
                         <p class="text-detail mt-1 "></p>
-                        <a href="{{url('/seller/'.$prod->seller->id)}}">
+                        <a href="{{url('/seller/'.$prod->sellerId)}}">
                             <p class="text-detail  ">
-                                    Vendido por: {{$prod->seller->commercial_name}}
+                                    Vendido por: {{$prod->commercial_name}}
                                 </p>
                         </a>
                         <div class="text-muted" style="    overflow: hidden;
@@ -350,7 +405,9 @@
             if(url.indexOf("?")==-1){
                 url=url+"?";
             }
-            if(newvalue.length < 3) return;
+
+            if(newvalue.length < 2) return;
+
             if(filtroActual!=""){
                 url=url.replace("&"+item+"="+filtroActual,"");
                 url=url.replace(""+item+"="+filtroActual,"");

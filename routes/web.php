@@ -25,6 +25,13 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
+// Auth Social
+Route::get('auth/redirect/{provider}', 'SocialController@redirect');
+  Route::get('callback/{provider}', 'SocialController@callback');
+//Route::get('auth/{provider}', 'SocialController@redirect');
+//Route::get('auth/{provider}/callback', 'SocialController@callback');
+
+
 //Rulo - Profile
 Route::get('perfil/{id}', 'ProfileController@userPage')->name('perfil-usuario');
 Route::post('perfil/{id}', 'ProfileController@updateUser');
