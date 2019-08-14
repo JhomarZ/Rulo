@@ -3,20 +3,53 @@
   <head>
     <meta charset="utf-8">
     <title>Comercio Planeta</title>
+
+
+    <link rel="icon" href="{{secure_asset('img/favicon.ico')}}">
     <!-- STYLES -->
-    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/icon-font.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('css/icon-font.min.css')}}">
+    <link rel="stylesheet" href="{{secure_asset('css/main.css')}}">
     <!-- Other libraries -->
-    <link rel="stylesheet" href="{{asset('css/venobox.css')}}" />
+    <link rel="stylesheet" href="{{secure_asset('css/venobox.css')}}" />
     <!-- Add the slick-theme.css if you want default styling -->
-    <link rel="stylesheet" type="text/css" href="{{asset('css/slick.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{secure_asset('css/slick.css')}}"/>
     <!-- Add the slick-theme.css if you want default styling -->
-    <link rel="stylesheet" type="text/css" href="{{asset('css/slick-theme.css')}}"/>
+    <link rel="stylesheet" type="text/css" href="{{secure_asset('css/slick-theme.css')}}"/>
   </head>
 
   <body>
+
+<!-- ETIQUETA DE FACEBOOK -->
+<!--
+<script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : "2304000486332540",
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v4.0'
+          });
+
+          FB.AppEvents.logPageView();
+
+        };
+
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement(s); js.id = id;
+           js.src = "https://connect.facebook.net/en_US/sdk.js";
+           fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+      </script>
+
+    -->
+<!-- FIN  ETIQUETA DE FACEBOOK -->
+
+
+
 
     @include('master.nav')
       @yield('content')

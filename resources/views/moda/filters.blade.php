@@ -230,7 +230,7 @@
             <div class="colorBlue tittledetail col-md-12">
               <div class="row">
                 <div class="col-md-12 col-sm-12">
-                @if($filtroBrands!=null || $priceFilter!="" || $p!="")
+                @if(Request::all())
                   <h3 class="float-left">Filtros
                     <a href="{{Request::url().'?'}}"><i class="fa fa-trash"></i></a>
                     <!--<a href="#"><i class="fa fa-save"></i></a>-->
@@ -244,7 +244,7 @@
                   </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
-                    @if($filtroBrands!=null || $priceFilter!="" || $p!="")
+                    @if(Request::all())
                     <ul class="filterActive ">
 
                                 @foreach($attributes as $paramAtt)

@@ -2,7 +2,7 @@
 @section('content')
 
     <!-- ETIQUETA DE FACEBOOK -->
-         <!-- Load Facebook SDK for JavaScript -->
+
             <div id="fb-root"></div>
             <script>
             window.fbAsyncInit = function() {
@@ -19,15 +19,16 @@
             js.src = 'https://connect.facebook.net/es_LA/sdk/xfbml.customerchat.js';
             fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));</script>
+<!-- FIN  ETIQUETA DE FACEBOOK -->
 
-            <!-- Your customer chat code -->
+            <!-- Your customer chat code FACEBOOK -->
             <div class="fb-customerchat"
             attribution=setup_tool
             page_id="112063850138503"
             theme_color="#44bec7">
             </div>
 
-    <!-- FIN  ETIQUETA DE FACEBOOK -->
+
 
 
 <div class="jumbotron" style="background-image: url('{{asset('img/bgPolo.jpg')}}');background-repeat: no-repeat;background-position: center; background-size: cover; height:300px;">

@@ -93,7 +93,7 @@
                                 @if($product->files->count()>0)
                                     <img style="max-height: 90px" class="card-img-top" src="{{$product->files[0]->image_list}}" data-holder-rendered="true">
                                 @else
-                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                    <img style="max-height: 200px;" class="card-img-top" src="https://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
                                 @endif
 
 

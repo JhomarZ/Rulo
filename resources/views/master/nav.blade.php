@@ -16,7 +16,7 @@
               <li class="nav-item">
                     @auth
                         <a class="nav-link" href="{{url('/perfil/'.Auth::user()->id)}}">
-                            <img src="{{asset('img/icon-user.png')}}"><span style="font-weight: bold;">
+                            <img src="{{asset('img/icon-user.png')}}"><span class="elipsis" style="font-weight: bold;">
                             {{Auth::user()->name}}</span></a>
                     @else
                         <a class="nav-link" href="{{url('/login')}}">

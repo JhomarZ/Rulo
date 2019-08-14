@@ -17,6 +17,7 @@
                 -->
                 <div class="col-md-2 col-sm-0"></div>
                 <div class="col-md-8 col-sm-12">
+
                     <a href="{{ url('/auth/redirect/facebook') }}" >
                         <button class="btn maxonmd btn-lg btn-bluedark btn-primary mt-3" type="submit"><i class=" fa fa-facebook"></i> Inicia con Facebook </button>
                     </a>
@@ -155,5 +156,18 @@
     </div>
 </div>
 -->
+
+<script>
+
+
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+      console.log("login inicio session");
+    statusChangeCallback(response);
+  });
+}
+
+</script>
+
 
 @endsection

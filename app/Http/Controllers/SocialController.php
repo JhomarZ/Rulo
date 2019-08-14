@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Socialite;
+use App\User;
 
 class SocialController extends Controller
 {
@@ -21,15 +23,17 @@ class SocialController extends Controller
       return redirect()->to('/home');
     }
     function createUser($getInfo,$provider){
-    $user = User::where('provider_id', $getInfo->id)->first();
-    if (!$user) {
-         $user = User::create([
-            'name'     => $getInfo->name,
-            'email'    => $getInfo->email,
-            'provider' => $provider,
-            'provider_id' => $getInfo->id
-        ]);
-      }
-      return $user;
+        $user = User::where('provider_id', $getInfo->id)->first();
+        if (!$user) {
+            $user = User::create([
+                'name'     => $getInfo->name,
+                'first_name'     => $getInfo->name,
+                'email'    => $getInfo->email,
+                'provider' => $provider,
+                'provider_id' => $getInfo->id,
+                'password' => Hash::make($getInfo->email)
+            ]);
+        }
+        return $user;
     }
 }

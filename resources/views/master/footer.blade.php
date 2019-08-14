@@ -54,13 +54,13 @@
 
   <!-- <script src="js/jquery.min.js" charset="utf-8"></script> -->
   <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-  <script src="{{asset('js/popper.min.js')}}" charset="utf-8"></script>
-  <script src="{{asset('js/bootstrap.min.js')}}" charset="utf-8"></script>
+  <script src="{{secure_asset('js/popper.min.js')}}" charset="utf-8"></script>
+  <script src="{{secure_asset('js/bootstrap.min.js')}}" charset="utf-8"></script>
   <!-- other libraries -->
-  <script type="text/javascript" src="{{asset('js/slick.js')}}"></script>
-  <script src="{{asset('js/jquery.slidereveal.min.js')}}"></script>
-  <script src="{{asset('js/main.js')}}" charset="utf-8"></script>
-  <script src="{{asset('js/venobox.min.js')}}"></script>
+  <script type="text/javascript" src="{{secure_asset('js/slick.js')}}"></script>
+  <script src="{{secure_asset('js/jquery.slidereveal.min.js')}}"></script>
+  <script src="{{secure_asset('js/main.js')}}" charset="utf-8"></script>
+  <script src="{{secure_asset('js/venobox.min.js')}}"></script>
 
   </body>
   </html>
