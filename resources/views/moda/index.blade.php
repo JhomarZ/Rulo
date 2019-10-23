@@ -77,7 +77,7 @@
            class="svgright3 svgleft3 btn btn-lg btn-defaultbg" type="submit">
             <img src="{{asset('img/search.png')}}">
             Buscar
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
+            <svg version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px" width="5.581px" height="14.608px" viewBox="0 0 5.581 14.608" enable-background="new 0 0 5.581 14.608" xml:space="preserve">
             <polygon fill="#fff" class="iconwhite" points="5.582,7.304 1.244,14.607 0,13.87 3.776,7.511 3.837,7.407 3.898,7.304 3.837,7.201 3.776,7.098
               0,0.738 1.244,0 "></polygon>
             </svg>
@@ -96,7 +96,7 @@
         <div class="row">
           <div class="col-md-12 col-sm-12">
             <h3>
-              <img src="{{asset('img/polo.png')}}">Productos más vistos
+              <img src="{{secure_asset('img/polo.png')}}">Productos más vistos
 
             </h3>
           </div>
@@ -115,7 +115,7 @@
                                 @if($feat->files->count()>0)
                                     <img style="max-height: 200px;" class="card-img-top" src="{{$feat->files[0]->image_list}}" data-holder-rendered="true">
                                 @else
-                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                    <img style="max-height: 200px;" class="card-img-top" src="https://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
                                 @endif
 
                                 <div class="card-body">
@@ -163,7 +163,7 @@
                                 @if($fav->files->count()>0)
                                     <img style="max-height: 200px;" class="card-img-top" src="{{$fav->files[0]->image_list}}" data-holder-rendered="true">
                                 @else
-                                    <img style="max-height: 200px;" class="card-img-top" src="http://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
+                                    <img style="max-height: 200px;" class="card-img-top" src="https://www.comercioplanetatest.com/css/sin-imagen.jpg" data-holder-rendered="true">
                                 @endif
 
 

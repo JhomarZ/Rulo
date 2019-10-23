@@ -2,7 +2,7 @@
     <div class="container">
       <div class="row">
         <div class="pt-5  col-sm-12 col-md-2">
-          <img src="{{asset('img/isotipo.png')}}">
+          <img src="{{secure_asset('img/isotipo.png')}}">
         </div>
         <div class="pt-5 col-sm-6 col-md-2">
           <h5 class="tittlefoot">Acerca de Comercio Planeta</h5>
@@ -28,8 +28,8 @@
           <h5 class="tittlefoot">Descárgate el APP gratis</h5>
           <ul class="list-unstyled text-small">
             <li>
-              <a class="text-muted" href="#"><img src="{{asset('img/appstore.png')}}"></a>
-              <a href=""><img src="{{asset('img/googleplay.png')}}"></a>
+              <a class="text-muted" href="#"><img src="{{secure_asset('img/appstore.png')}}"></a>
+              <a href=""><img src="{{secure_asset('img/googleplay.png')}}"></a>
             </li>
           </ul>
         </div>
